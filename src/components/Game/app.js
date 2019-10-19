@@ -3,87 +3,48 @@ import React, { Component } from "react";
 import Planets from "../Planets";
 import Title from "../Title";
 import Wrapper from "../Wrapper";
+import Score from "../Score";
 import data from "../../planets.json";
 
 class Functionality extends Component {
     // set initial state
     state = {
-        data,
+        data: data,
         score: 0,
         totalScore: 0
     }
 
-    componentDidMount() {
+    correctGuess = () => {
+        let guess = false;
+        let newData = this.state.data.map(data => {
+            let checkData = {...data};
+            if (checkData.id === id) {
 
-    }
-
-    correctGuess = (addData) => {
-        let { score, totalScore } = this.state;
-        let newScore = score + 1;
-        let newTotalScore = Math.max(newScore, totalScore);
-
+            }
+        })
         this.setState({
-            data: this.randomize(data),
-            score: newScore,
+            score: this.state.score + 1,
             totalScore: newTotalScore
         });
-
+        this.randomizeImages(data);
     }
 
-    randomize = (data) => {
+    // shuffles images 
+    randomizeImages = (data) => {
         for (let i = data.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * i + 1);
-            let tempArr = data[i];
-            data[i] = data[j];
-            data[j] = tempArr;
+            let j = Math.floor(Math.random() * (i + 1));
+            [data[i], data[j]] = [data[j], data[i]]
         }
         return data;
     }
 
-    checkGuess = (id) => {
-        // let correctGuess = false;
-        // let counts = []
-        // let ? = this.state.data.map(...id) {
-
-        // }
-
-        // or
-
-        // this.props.id.map((data, index) => {
-          
-            // if(counts[data.id[i]] === undefined) {
-            //counts[data.[i]] = 1;
-            // return true;
-            // } else {
-                // this.state.randomize(data)
-            //  
-            //}
-            
-
-        // }
-
-        
-
-
-        // translate for loop to map()??
-
-        // for (let i = 0; i <= data.id.length; i++) {
-        // if(counts[data.id[i]] === undefined) {
-        //counts[data.[i]] = 1;
-        // } else {
-        //   return true;
-        //}
-        //}
-        // return false;
-    }
-
-
     render() {
         return (
-            <Wrapper className="wrapper">
+            <Wrapper className="wrapper" >
                 <Title>Memory Game</Title>
+                <Score />
                 {this.state.data.map(planetobj => (
-                    
+
                     <Planets
                         id={planetobj.id}
                         key={planetobj.id}
@@ -91,8 +52,9 @@ class Functionality extends Component {
                         image={planetobj.image}
                     />
 
-                ))}
-            </Wrapper>
+                ))
+                }
+            </Wrapper >
         );
     }
 
