@@ -14,29 +14,43 @@ class Functionality extends Component {
         totalScore: 0
     }
 
-    correctGuess = () => {
-        let guess = false;
-        let newData = this.state.data.map(data => {
-            let checkData = {...data};
-            if (checkData.id === id) {
+    // handles functionality when player guesses correctly
+    correctGuess = (planetData) => {
+        // setting score & totalScore to their current states in the game
+        let { score, totalScore } = this.state;
+        // adds 1 to score when player guesses correctly
+        let newScore = score + 1;
+        // checks which variable is greater, and adjusts totalScore if newScore is greater
+        let newTotalScore = Math.max(newScore, totalScore);
 
-            }
-        })
         this.setState({
-            score: this.state.score + 1,
+            //  shuffling planets based on new data
+            data: this.randomizeImages(planetData),
+            // adjusts score
+            score: newScore,
+            // adjusts total score
             totalScore: newTotalScore
         });
-        this.randomizeImages(data);
+    };
+
+    incorrectGuess = () => {
+        // loops through data, sets clicked status to false 
+        this.state.data.map(planetData => (planetData.clicked = false))
+
+        // randomizes images
+        return this.randomizeImages(data);
+
     }
 
     // shuffles images 
     randomizeImages = (data) => {
+        // looping through data using destructuring assignment
         for (let i = data.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [data[i], data[j]] = [data[j], data[i]]
         }
         return data;
-    }
+    };
 
     render() {
         return (
@@ -57,7 +71,6 @@ class Functionality extends Component {
             </Wrapper >
         );
     }
-
 }
 
 export default Functionality;
