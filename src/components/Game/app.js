@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Planets from "../Planets";
 import Title from "../Title";
 import Wrapper from "../Wrapper";
-import Score from "../Score";
 import data from "../../planets.json";
 
 class Functionality extends Component {
@@ -14,7 +13,6 @@ class Functionality extends Component {
         totalScore: 0
     }
 
-    // handles functionality when player guesses correctly
     correctGuess = (planetData) => {
         // setting score & totalScore to their current states in the game
         let { score, totalScore } = this.state;
@@ -36,10 +34,11 @@ class Functionality extends Component {
     incorrectGuess = () => {
         // loops through data, sets clicked status to false 
         this.state.data.map(planetData => (planetData.clicked = false))
-
-        // randomizes images
-        return this.randomizeImages(data);
-
+        // resetting score, and reshuffling images
+        this.setState = {
+            data: this.randomizeImages(data),
+            score: 0
+        }
     }
 
     // shuffles images 
@@ -52,11 +51,25 @@ class Functionality extends Component {
         return data;
     };
 
+    // clickEvent = (data) => {
+    //     let dups = [];
+    //     for (let i = 0; i <= this.data.id.length; i++) {
+    //         if(dups[this.data.id[i]] === undefined) {
+    //             dups[this.data[i]] = 1;
+    //         } else {
+    //             this.incorrectGuess(data)
+    //         }
+    //     }
+    //     this.correctGuess(data);
+    // }
+
+
+
     render() {
         return (
             <Wrapper className="wrapper" >
-                <Title>Memory Game</Title>
-                <Score />
+                <Title>Memory Game <br /> Score: {this.state.score} Top Score: {this.state.totalScore}</Title>
+                {/* <Score /> */}
                 {this.state.data.map(planetobj => (
 
                     <Planets
@@ -65,7 +78,6 @@ class Functionality extends Component {
                         name={planetobj.name}
                         image={planetobj.image}
                     />
-
                 ))
                 }
             </Wrapper >
